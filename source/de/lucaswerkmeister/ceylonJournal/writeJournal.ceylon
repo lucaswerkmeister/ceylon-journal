@@ -13,6 +13,7 @@ shared void writeJournal(message, fields = {}) {
     
     assert (exists iov1 = iovecs[0]);
     setIovecToString(iov1, message, messageBytes);
+    messageBytes.flip();
     
     for (field->iov in zipEntries(fieldsSeq, iovecs.array.rest)) {
         assert (exists iov);
