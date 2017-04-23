@@ -1,4 +1,4 @@
-"""This module lets you send messages with structured information to the system journal.
+"""This module lets you send messages with structured information to the systemd system journal.
    
    Usage example:
    
