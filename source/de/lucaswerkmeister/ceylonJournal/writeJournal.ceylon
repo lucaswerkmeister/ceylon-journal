@@ -2,16 +2,19 @@ import java.lang {
     ObjectArray
 }
 
-shared void writeJournal(message, messageId = null, fields = {}) {
+shared void writeJournal(message, messageId = null, priority = null, fields = {}) {
     String message;
     MessageId? messageId;
-    // TODO more parameters
+    Priority? priority;
     {<String->String>*} fields;
     
     value fieldsSeq = fields.sequence();
     variable value nFields = fieldsSeq.size;
     nFields += 1; // message
     if (messageId exists) {
+        nFields += 1;
+    }
+    if (priority exists) {
         nFields += 1;
     }
     assert (is ObjectArray<Iovec> iovecsArray = Iovec().toArray(nFields));
@@ -26,6 +29,13 @@ shared void writeJournal(message, messageId = null, fields = {}) {
         assert (exists iov = remainingIovecs.first);
         setIovecToByteBuffer(iov, messageId.encodedField);
         messageId.encodedField.flip();
+        remainingIovecs = remainingIovecs.rest;
+    }
+    
+    if (exists priority) {
+        assert (exists iov = remainingIovecs.first);
+        setIovecToByteBuffer(iov, priority.encodedField);
+        priority.encodedField.flip();
         remainingIovecs = remainingIovecs.rest;
     }
     
