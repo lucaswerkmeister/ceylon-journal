@@ -6,7 +6,9 @@ import java.lang {
     ObjectArray,
     Types
 }
-import ceylon.buffer.charset { utf8 }
+import ceylon.buffer.charset {
+    utf8
+}
 
 shared Systemd systemd = Native.loadLibrary("systemd", Types.classForType<Systemd>());
 
