@@ -5,6 +5,7 @@ shared void run() {
     writeJournal {
         "Just message.";
     };
+    includeLocation = false;
     writeJournal {
         "Message, message ID and priority.";
         messageId = message_messageMessageIdAndPriority;
@@ -14,6 +15,7 @@ shared void run() {
         "Message and field.";
         "FIELD1"->"field one"
     };
+    includeLocation = true;
     writeJournal {
         "Message, message ID, priority and field.";
         messageId = message_messageMessageIdPriorityAndField;
