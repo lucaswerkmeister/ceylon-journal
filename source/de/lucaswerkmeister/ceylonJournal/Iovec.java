@@ -11,6 +11,10 @@ public class Iovec extends Structure {
     public Pointer base;
     public int length;
     
+    public Iovec() {
+        this(null, 0);
+    }
+    
     public Iovec(Pointer base, int length) {
         this.base = base;
         this.length = length;
