@@ -33,20 +33,17 @@ shared void writeJournal(message, messageId = null, priority = null, fields = {}
     
     assert (exists iov1 = remainingIovecs.first);
     setIovecToByteBufferPlusString(iov1, messageBytes, message);
-    messageBytes.flip();
     remainingIovecs = remainingIovecs.rest;
     
     if (exists messageId) {
         assert (exists iov = remainingIovecs.first);
         setIovecToByteBuffer(iov, messageId.encodedField);
-        messageId.encodedField.flip();
         remainingIovecs = remainingIovecs.rest;
     }
     
     if (exists priority) {
         assert (exists iov = remainingIovecs.first);
         setIovecToByteBuffer(iov, priority.encodedField);
-        priority.encodedField.flip();
         remainingIovecs = remainingIovecs.rest;
     }
     
@@ -54,15 +51,12 @@ shared void writeJournal(message, messageId = null, priority = null, fields = {}
         value [codeFile, codeLine, className, methodName] = getCodeInformation();
         assert (exists iovFile = remainingIovecs.first);
         setIovecToByteBufferPlusString(iovFile, codeFileBytes, codeFile);
-        codeFileBytes.flip();
         remainingIovecs = remainingIovecs.rest;
         assert (exists iovLine = remainingIovecs.first);
         setIovecToByteBufferPlusString(iovLine, codeLineBytes, codeLine.string);
-        codeLineBytes.flip();
         remainingIovecs = remainingIovecs.rest;
         assert (exists iovFunc = remainingIovecs.first);
         setIovecToByteBufferPlusString(iovFunc, codeFuncBytes, methodName);
-        codeFuncBytes.flip();
         remainingIovecs = remainingIovecs.rest;
     }
     

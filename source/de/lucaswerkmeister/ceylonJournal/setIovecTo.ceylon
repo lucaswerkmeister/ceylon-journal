@@ -31,6 +31,7 @@ void setIovecToByteBufferPlusString(Iovec iovec, ByteBuffer byteBuffer, String s
     for (i in 0:byteBufferLength) {
         memory.setByte(i, byteBuffer.get());
     }
+    byteBuffer.flip();
     for (i in byteBufferLength:stringLength) {
         memory.setByte(i, encodedString.get());
     }
@@ -46,6 +47,7 @@ void setIovecToByteBuffer(Iovec iovec, ByteBuffer byteBuffer) {
     for (i in 0:byteBufferLength) {
         memory.setByte(i, byteBuffer.get());
     }
+    byteBuffer.flip();
     
     iovec.base = memory;
     iovec.length = byteBufferLength;
