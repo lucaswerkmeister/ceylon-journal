@@ -2,6 +2,14 @@ import java.lang {
     ObjectArray
 }
 
+"Whether to include location information in journal messages.
+ 
+ If [[true]] (default),
+ the file name of the [[writeJournal]] invocation is stored in the `CODE_FILE` field,
+ the line number of the [[writeJournal]] invocation is stored in the `CODE_LINE` field,
+ and the function name of the [[writeJournal]] invocation is stored in the `CODE_FUNC` field."
+shared variable Boolean includeLocation = true;
+
 shared void writeJournal(message, messageId = null, priority = null, fields = {}) {
     String message;
     MessageId? messageId;
@@ -16,6 +24,9 @@ shared void writeJournal(message, messageId = null, priority = null, fields = {}
     }
     if (priority exists) {
         nFields += 1;
+    }
+    if (includeLocation) {
+        nFields += 3;
     }
     assert (is ObjectArray<Iovec> iovecsArray = Iovec().toArray(nFields));
     variable List<Iovec?> remainingIovecs = iovecsArray.array;
@@ -36,6 +47,22 @@ shared void writeJournal(message, messageId = null, priority = null, fields = {}
         assert (exists iov = remainingIovecs.first);
         setIovecToByteBuffer(iov, priority.encodedField);
         priority.encodedField.flip();
+        remainingIovecs = remainingIovecs.rest;
+    }
+    
+    if (includeLocation) {
+        value [codeFile, codeLine, className, methodName] = getCodeInformation();
+        assert (exists iovFile = remainingIovecs.first);
+        setIovecToByteBufferPlusString(iovFile, codeFileBytes, codeFile);
+        codeFileBytes.flip();
+        remainingIovecs = remainingIovecs.rest;
+        assert (exists iovLine = remainingIovecs.first);
+        setIovecToByteBufferPlusString(iovLine, codeLineBytes, codeLine.string);
+        codeLineBytes.flip();
+        remainingIovecs = remainingIovecs.rest;
+        assert (exists iovFunc = remainingIovecs.first);
+        setIovecToByteBufferPlusString(iovFunc, codeFuncBytes, methodName);
+        codeFuncBytes.flip();
         remainingIovecs = remainingIovecs.rest;
     }
     

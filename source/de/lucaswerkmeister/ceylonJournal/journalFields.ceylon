@@ -11,3 +11,6 @@ import ceylon.buffer.charset {
 ByteBuffer messageBytes = utf8.encodeBuffer("MESSAGE=");
 ByteBuffer messageIdBytes = utf8.encodeBuffer("MESSAGE_ID=");
 ByteBuffer priorityBytes = utf8.encodeBuffer("PRIORITY=");
+ByteBuffer codeFileBytes = utf8.encodeBuffer("CODE_FILE=");
+ByteBuffer codeLineBytes = utf8.encodeBuffer("CODE_LINE=");
+ByteBuffer codeFuncBytes = utf8.encodeBuffer("CODE_FUNC=");
