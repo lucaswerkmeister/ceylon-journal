@@ -9,3 +9,4 @@ import ceylon.buffer.charset {
 // so that they don’t have to be re-encoded each time they are logged.
 
 ByteBuffer messageBytes = utf8.encodeBuffer("MESSAGE=");
+ByteBuffer messageIdBytes = utf8.encodeBuffer("MESSAGE_ID=");
