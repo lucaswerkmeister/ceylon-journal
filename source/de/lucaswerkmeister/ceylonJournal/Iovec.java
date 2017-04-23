@@ -8,12 +8,6 @@ import com.sun.jna.Structure;
 
 public class Iovec extends Structure {
     
-    public static class ByReference extends Iovec implements Structure.ByReference {
-        public ByReference(Pointer base, int length) {
-            super(base, length);
-        }
-    }
-    
     public Pointer base;
     public int length;
     
