@@ -91,6 +91,6 @@ shared void writeJournal(message, messageId = null, priority = null, fields = {}
     
     value ret = systemd.sd_journal_sendv(iovecsArray, iovecsArray.size);
     if (ret < 0) {
-        throw AssertionError("sd_journal_sendv returned error `` -ret ``"); // TODO strerror
+        throw AssertionError("sd_journal_sendv(): `` c.strerror(-ret) ``");
     }
 }
