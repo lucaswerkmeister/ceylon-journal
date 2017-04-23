@@ -10,6 +10,29 @@ import java.lang {
  and the function name of the [[writeJournal]] invocation is stored in the `CODE_FUNC` field."
 shared variable Boolean includeLocation = true;
 
+"""Send a message to the system journal.
+   Certain well-known fields are available as named parameters,
+   and custom fields may be specified using the iterable [[fields]] parameter.
+   
+   Usage example:
+   
+       writeJournal {
+           "User ``user`` requested calculation: ``operand1`` ``operator`` ``operand2`` = ``result``";
+           messageId = message_calculation; // toplevel value
+           priority = Priority.info;
+           "USER"->user,
+           "OPERAND1"->operand1.string,
+           "OPERAND2"->operand2.string,
+           "OPERATOR"->operator,
+           "RESULT"->result
+       };
+   
+   You can then search for all additions performed by user `joe` with the following command:
+   ~~~sh
+   journalctl USER=joe OPERATOR=+
+   ~~~
+   (Ideally, you would also add a match for `MESSAGE_ID` with the value of `message_calculation`.)"""
+throws (`class AssertionError`, "If the underlying `sd_journal_sendv` function returns an error.")
 shared void writeJournal(message, messageId = null, priority = null, fields = {}) {
     String message;
     MessageId? messageId;
