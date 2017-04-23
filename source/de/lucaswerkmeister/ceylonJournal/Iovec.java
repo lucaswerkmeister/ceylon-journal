@@ -19,10 +19,9 @@ public class Iovec extends Structure {
         this.base = base;
         this.length = length;
     }
-
+    
     @Override
     protected List<String> getFieldOrder() {
         return Arrays.asList("base", "length");
     }
-
 }
