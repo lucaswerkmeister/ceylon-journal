@@ -12,7 +12,7 @@ shared void writeJournal(message, fields = {}) {
     assert (is ObjectArray<Iovec> iovecs = Iovec().toArray(nFields));
     
     assert (exists iov1 = iovecs[0]);
-    setIovecToString(iov1, "MESSAGE=``message``"); // TODO optimize, MESSAGE= has constant encoding
+    setIovecToString(iov1, message, messageBytes);
     
     for (field->iov in zipEntries(fieldsSeq, iovecs.array.rest)) {
         assert (exists iov);
