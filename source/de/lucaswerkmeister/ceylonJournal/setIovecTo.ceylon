@@ -4,11 +4,11 @@ import ceylon.buffer {
 import ceylon.buffer.charset {
     utf8
 }
-import com.sun.jna {
-    Memory
-}
 
-void setIovecToString(Iovec iovec, String string) {
+native ("jvm") void setIovecToString(Iovec iovec, String string) {
+    import com.sun.jna {
+        Memory
+    }
     value encodedString = utf8.encodeBuffer(string);
     value stringLength = encodedString.available;
     value memory = Memory(stringLength);
@@ -21,7 +21,10 @@ void setIovecToString(Iovec iovec, String string) {
     iovec.length = stringLength;
 }
 
-void setIovecToByteBufferPlusString(Iovec iovec, ByteBuffer byteBuffer, String string) {
+native ("jvm") void setIovecToByteBufferPlusString(Iovec iovec, ByteBuffer byteBuffer, String string) {
+    import com.sun.jna {
+        Memory
+    }
     value byteBufferLength = byteBuffer.available;
     value encodedString = utf8.encodeBuffer(string);
     value stringLength = encodedString.available;
@@ -40,7 +43,10 @@ void setIovecToByteBufferPlusString(Iovec iovec, ByteBuffer byteBuffer, String s
     iovec.length = totalLength;
 }
 
-void setIovecToByteBuffer(Iovec iovec, ByteBuffer byteBuffer) {
+native ("jvm") void setIovecToByteBuffer(Iovec iovec, ByteBuffer byteBuffer) {
+    import com.sun.jna {
+        Memory
+    }
     value byteBufferLength = byteBuffer.available;
     value memory = Memory(byteBufferLength);
     

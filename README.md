@@ -9,11 +9,7 @@ Current status
 Prototype / pre-release candidate.
 You can use it, but I don’t promise a stable interface yet.
 The `run` function definitely has to be removed before release,
-and I want to investigate a Node.js version too,
-either via [node-ffi] or by just calling `logger --journald`.
-Also, automated tests are definitely necessary.
-
-[node-ffi]: https://github.com/node-ffi/node-ffi
+and automated tests are definitely necessary.
 
 Usage
 -----

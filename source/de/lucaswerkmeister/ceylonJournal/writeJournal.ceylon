@@ -1,7 +1,3 @@
-import java.lang {
-    ObjectArray
-}
-
 "Whether to include location information in journal messages.
  
  If [[true]] (default),
@@ -33,7 +29,12 @@ shared variable Boolean includeLocation = true;
    ~~~
    (Ideally, you would also add a match for `MESSAGE_ID` with the value of `message_calculation`.)"""
 throws (`class AssertionError`, "If the underlying `sd_journal_sendv` function returns an error.")
-shared void writeJournal(message, messageId = null, priority = null, fields = {}) {
+native shared void writeJournal(String message, MessageId? messageId = null, Priority? priority = null, {<String->String>*} fields = {});
+
+native ("jvm") shared void writeJournal(message, messageId = null, priority = null, fields = {}) {
+    import java.lang {
+        ObjectArray
+    }
     String message;
     MessageId? messageId;
     Priority? priority;
@@ -91,6 +92,40 @@ shared void writeJournal(message, messageId = null, priority = null, fields = {}
     
     value ret = systemd.sd_journal_sendv(iovecsArray, iovecsArray.size);
     if (ret < 0) {
-        throw AssertionError("sd_journal_sendv(): `` c.strerror(-ret) ``");
+        throw AssertionError("sd_journal_sendv(): ``c.strerror(-ret)``");
+    }
+}
+
+native ("js") shared void writeJournal(message, messageId = null, priority = null, fields = {}) {
+    String message;
+    MessageId? messageId;
+    Priority? priority;
+    {<String->String>*} fields;
+    
+    dynamic {
+        suppressWarnings("redundantIteration") // the alternative syntax, dynamic [,], is ugly as sin
+        dynamic iovecs = dynamic [ *empty ];
+        
+        iovecs.push(makeIovecFromByteBufferPlusString(messageBytes, message));
+        
+        if (exists messageId) {
+            iovecs.push(makeIovecFromByteBuffer(messageId.encodedField));
+        }
+        
+        if (exists priority) {
+            iovecs.push(makeIovecFromByteBuffer(priority.encodedField));
+        }
+        
+        // TODO includeLocation?
+        
+        for (key->item in fields) {
+            iovecs.push(makeIovecFromString(key + "=" + item));
+        }
+        
+        dynamic array = iovecArray(iovecs);
+        Integer ret = libsystemd.sd_journal_sendv(array, array.length);
+        if (ret < 0) {
+            throw AssertionError("sd_journal_sendv(): `` -ret ``"); // TODO strerror
+        }
     }
 }

@@ -31,8 +31,12 @@
 see (`function writeJournal`, `class MessageId`, `class Priority`)
 by ("Lucas Werkmeister <mail@lucaswerkmeister.de>")
 license ("https://www.gnu.org/licenses/lgpl-3.0.html")
-native ("jvm") module de.lucaswerkmeister.ceylonJournal "0.1.0" {
-    import java.base "7";
+native ("jvm", "js") module de.lucaswerkmeister.ceylonJournal "0.2.0" {
+    native ("jvm") import java.base "7";
     shared import ceylon.buffer "1.3.3-SNAPSHOT";
-    shared import maven:net.java.dev.jna:"jna" "4.4.0";
+    native ("jvm") shared import maven:net.java.dev.jna:"jna" "4.4.0";
+    native ("js") import npm:ffi "2.2.0";
+    native ("js") import npm:ref "1.3.4";
+    native ("js") import npm:"ref-array" "1.2.0";
+    native ("js") import npm:"ref-struct" "1.1.0";
 }
