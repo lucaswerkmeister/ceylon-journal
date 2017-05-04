@@ -30,7 +30,7 @@ native ("js") dynamic makeIovecFromByteBufferPlusString(ByteBuffer byteBuffer, S
         }
         byteBuffer.flip();
         writeCString(nodeBuffer, byteBufferLength, string, "utf8");
-        nodeBuffer.type = (refType((types).char)); // the ()s work around ceylon/ceylon#7050 and ceylon/ceylon#7051; TODO remove
+        nodeBuffer.type = refType((types).char); // the ()s work around ceylon/ceylon#7050; TODO remove
         return iovec(dynamic [
                 iov_base = nodeBuffer;
                 iov_len = byteBufferLength + stringLength; // don’t include null byte in length here
@@ -50,7 +50,7 @@ native ("js") dynamic makeIovecFromByteBuffer(ByteBuffer byteBuffer) {
             nodeBuffer[i] = byteBuffer.get().unsigned;
         }
         byteBuffer.flip();
-        nodeBuffer.type = (refType((types).char)); // the ()s work around ceylon/ceylon#7050 and ceylon/ceylon#7051; TODO remove
+        nodeBuffer.type = refType((types).char); // the ()s work around ceylon/ceylon#7050; TODO remove
         return iovec(dynamic [
                 iov_base = nodeBuffer;
                 iov_len = byteBufferLength;
